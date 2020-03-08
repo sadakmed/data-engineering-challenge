@@ -16,6 +16,4 @@ CORS(app)
 initialize_db(app)
 initialize_routes(app)
 
-
-
 app.run()
