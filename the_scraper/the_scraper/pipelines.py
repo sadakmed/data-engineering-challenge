@@ -14,8 +14,5 @@ class SavePipeline(object):
 
 
     def process_item(self, item, spider):
-        for data in item:
-            if data is None :
-                return
         self.collection.insert_one(dict(item))
         return item

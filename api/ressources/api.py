@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 import json
 
 
-
+# extract the metadata url, headline, authors ... 
 class NewsPnt(Resource):
     
     def get(self):
@@ -25,13 +25,13 @@ class NewsPnt(Resource):
         return Response(news, mimetype="application/json", status=200)
 
 
-
+#endpoint for sending an article giving an id 
 class ArticlePnt(Resource):
     def get(self,id):
         news = News.objects.filter(id = ObjectId(id)).to_json()
         return Response(news, mimetype="application/json", status=200)
 
-
+#endpoint for all the authors, needed for select option
 class AuthorPnt(Resource):
     def get(self):
         news = News.objects.only('authors')
@@ -39,6 +39,7 @@ class AuthorPnt(Resource):
         y = set(chain(*authors))
         return jsonify({'authors':list(y)})
 
+#endpoint for all the tags, needed for select option
 class TagPnt(Resource):
     def get(self):
         news = News.objects.only('tag').distinct('tag')

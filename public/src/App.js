@@ -17,17 +17,21 @@ class App extends React.Component{
 
 
 componentDidMount(){
+  // needed for the first view
   axios.get("http://127.0.0.1:5000/api/v1/news")
   .then(res=>{this.setState({articles:res.data})})
 
+  // needed for the author select option
   axios.get("http://127.0.0.1:5000/api/v1/news/author")
   .then(res=>{this.setState({author:res.data.authors})})
-
+  
+  // needed for the tag select option
   axios.get("http://127.0.0.1:5000/api/v1/news/tag")
   .then(res=>{this.setState({tag:res.data.tags})})
 }
 
 
+//this for the search extract the values and send a request with GET
 submit = (e) => {
               e.preventDefault()
               let tag = document.querySelector('#tag').value
@@ -41,6 +45,8 @@ submit = (e) => {
                     })
         }
 
+
+# after clicking on show it sends a request with the id to retrieve the article
 browse = (e,id) => {
   e.preventDefault()
   axios.get("http://127.0.0.1:5000/api/v1/news/"+id)

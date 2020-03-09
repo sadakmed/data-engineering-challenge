@@ -3,8 +3,11 @@ from scrapy.loader.processors import MapCompose,TakeFirst
 
 
 
+# the tag and headline is extracted from the title it has the format below 
+# ‘Society still expects women to do all the caring’ | Books | The Guardian
+# the first is the headline and the second is the tag
 def parse_tag(text):
-    return text.split('|')[-2].strip()
+    return text.split('|')[1].strip()
 
 
 def parse_head(text):
