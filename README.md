@@ -7,8 +7,8 @@ This is a challenge for UnitedRemote that consists of 3 parts
 
 Technologies used:
 
-+ For scraping, I can't get away from scraper. it's just so great. 
-+ For API i have the choise between Django and Flask, Flask is more convinient.
++ For scraping, I can't get away from scrapy. it's just so great. 
++ For API i have the choise between Django and Flask, Flask is more convenient.
 + Frontend either React or just simple html page and i will manage the data with JS.
 
 

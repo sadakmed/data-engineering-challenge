@@ -1,0 +1,5 @@
+Flask_Cors==3.0.8
+Flask==1.1.1
+Flask_RESTful==0.3.8
+pymongo==3.9.0
+flask_mongoengine==0.9.5

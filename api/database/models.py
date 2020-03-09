@@ -2,7 +2,7 @@ from .db import db
 
 class News(db.Document):
     headline=db.StringField()
-    author=db.StringField()
+    authors=db.StringField()
     tag=db.StringField()
     url=db.StringField()
     date=db.DateTimeField()

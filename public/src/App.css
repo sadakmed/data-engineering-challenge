@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+
+.scroll-div {
+  height: 600px;
+  overflow-y: scroll;
+  padding: 0px 0px;
+}
+
+#dsTable {
+  padding: 0px 0px;
+}
+
+table {
+  width:100%;
+}

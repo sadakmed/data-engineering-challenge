@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios'
 import { render } from 'react-dom';
+import './App.css'
 
 
 class App extends React.Component{
@@ -57,7 +58,7 @@ render() {
   <div className="container-fluid">
     <div className="navbar-header">
         
-                  <div className="col-md-12 col-md-offset-6" style={{marginTop:'10px'}} >
+                  <div className="col-md-12 col-md-offset-4" style={{marginTop:'10px'}} >
 
                         <form className="form-inline mr-auto" onSubmit={e=>this.submit(e) }>
                           <input style={{marginRight:'5px'}}  className="form-control" type="text" id="keyword" placeholder="keywords" aria-label="Search"  />
@@ -90,9 +91,10 @@ render() {
 
 
                   <div className="container">
-                          <div className="row" style={{}} >
-                                  <div className="col-sm-5">
-                                  <table className="table table-bordered text-center">
+                          <div className="row" >
+                                  <div className="col-sm-6">
+                                  <div className="scroll-div">
+                                  <table className="table table-bordered table-fixed text-center">
                                     <thead >
                                       <tr >
                                         <th className="text-center" >Headline</th>
@@ -104,9 +106,9 @@ render() {
                                     <tbody>
                                       {this.state.articles.map((art,i)=> {return (
                                             <tr  key={i}>
-                                            <td><a href={art.url}>{art.headline}</a></td>
+                                            <td><a href={art.url}>{i}. {art.headline}</a></td>
                                             <td>{art.tag}</td>
-                                            <td>{art.author}</td>
+                                            <td>{art.authors[0]}</td>
                                             <td><a   onClick={(event)=>{event.preventDefault();this.browse(event,art._id.$oid);event.preventDefault()} }> Show </a></td>
                                             </tr>
                                       )})}
@@ -114,14 +116,21 @@ render() {
                                   </table>
 
                                   </div>
-                                  <div className="col-sm-7">
+                                  </div>
+                                  <div className="col-sm-6">
                                       {this.state.page.map(pa=> {return (
                                             <div className="panel panel-default">
                                                   <div className="panel-heading">
-                                                        <h3 className="panel-title text-center">{pa.headline}</h3>
+                                                       <a href= {pa.url} >  <h3 className="panel-title text-center">{pa.headline}</h3></a>
                                                   </div>
                                                   <div className="panel-body">
-                                                        {pa.article}
+                                                       
+                                                  {pa.article.map(part=> {return (
+                                                       
+                                                      <p>  {part} </p>
+                                                        
+                                                        
+                                                        )})}
                                                   </div>
                                             </div>
                                       )})}
