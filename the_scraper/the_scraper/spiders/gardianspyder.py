@@ -62,7 +62,7 @@ class GardianSpyder(Spider):
 			loader.add_value('article',article)
 			loader.add_value('url',response.url)
 
-			loader.add_css('headline','div > h1.content__headline::text')
+			loader.add_css('headline','title::text')
 			loader.add_css('tag','title::text')
 			loader.add_css('date','p.content__dateline > time::attr(data-timestamp)')
 
