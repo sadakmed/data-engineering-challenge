@@ -1,14 +1,17 @@
-# -*- coding: utf-8 -*-
-
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
-import scrapy
+from  scrapy import Item, Field
+from scrapy.loader.processors import MapCompose,TakeFirst
 
 
-class TheScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+
+def parse_tag(text):
+    return text.split('|')[-2].strip()
+
+
+class Article(Item):
+    
+    article  =  Field()
+    authors  =  Field()
+    headline =  Field(input_processor=MapCompose(str.strip),output_processor=TakeFirst())
+    date     =  Field(input_processor=MapCompose(int),output_processor=TakeFirst())
+    tag      =  Field(input_processor=MapCompose(parse_tag),output_processor=TakeFirst())
+    url      =  Field(output_processor=TakeFirst())

@@ -1,13 +1,16 @@
-import scrapy
+from scrapy import Spider, Request
+from scrapy.loader import ItemLoader
 from bs4 import BeautifulSoup as soup
+from the_scraper.items import Article
 
 roo="https://www.theguardian.com"
 depth=1
-global count
-count=0
 nmbArticles=3
-class GardianSpyder(scrapy.Spider):
+
+
+class GardianSpyder(Spider):
 	name = "GardianSpyder"
+	allowed_domains = ['theguardian.com']
 	start_urls = ["https://www.theguardian.com/uk"]
 
 	def parse(self, response):    
@@ -28,40 +31,43 @@ class GardianSpyder(scrapy.Spider):
 
 	def parse_pagination(self,response):
 		articles=response.css('div > section a::attr(href)').getall()
-		print('\nparsing pagination :\t', response.url,f'parsed {len(articles)} articles')
+		#print('\nparsing pagination :\t', response.url,f'parsed {len(articles)} articles')
 
 		for article in articles:
-			yield scrapy.Request(url=article,callback=self.parse_article)
+			yield Request(url=article,callback=self.parse_article)
 
 		next_pagination=response.css('div.pagination__list a::attr(href)').getall()
 
 		if next_pagination is not None:
-#			print('this is the next pagination pages',next_pagination)
-			if '=' in next_pagination[-1] and int(next_pagination[-1].split('=')[-1]) < 4:
-				print('\nthis is where we\'re going:',next_pagination[-1])
+			if '=' in next_pagination[-1] and int(next_pagination[-1].split('=')[-1]) < depth+1:
+				# print('\nthis is where we\'re going:',next_pagination[-1])
 
 				yield response.follow(next_pagination[-1],callback=self.parse_pagination)
 
 
 	def parse_article(self,response):
 		if self.isArticle(response):
-			text=soup("\n".join(response.css('div.content__article-body > p').getall()),'html.parser' ).text
-			headline=response.css('div > h1.content__headline::text').get()     
-			print('\nparsing article : ', response.url)
-			authors=response.css('p.byline span span::text').getall()  
-			if authors is None:
-				authors=response.css('div.meta__contact-wrap p.byline::text').getall()  
 
-			date=response.css('p.content__dateline > time::attr(data-timestamp)').get() 
-			tag=response.css('title::text').get().split('|')[-2].strip()
-			yield {
-				'article':text,
-				'headline':headline,
-				'authors':authors,
-				'date':date,
-				'tag':tag,
-				'url': response.url
-			}
+			loader=ItemLoader(item=Article() , selector=response)
+			
+			article=list(map(lambda x : soup(x,'html.parser').text ,response.css('div.content__article-body > p').getall())	)
+			
+			authors=response.css('p.byline span span::text').getall()  
+			if len(authors) == 0 :
+				authors=response.css('div.meta__contact-wrap p.byline::text').getall()  
+			if len(authors) == 0:
+				authors=['unkown']
+			
+			loader.add_value('authors',authors)
+			loader.add_value('article',article)
+			loader.add_value('url',response.url)
+
+			loader.add_css('headline','div > h1.content__headline::text')
+			loader.add_css('tag','title::text')
+			loader.add_css('date','p.content__dateline > time::attr(data-timestamp)')
+
+
+			yield loader.load_item()
 
 
 		elif self.isPagination(response):

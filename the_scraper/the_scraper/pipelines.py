@@ -1,11 +1,21 @@
-# -*- coding: utf-8 -*-
-
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+import pymongo
+from the_scraper import settings
 
 
-class TheScraperPipeline(object):
+
+
+
+
+class SavePipeline(object):
+    def __init__(self):
+        client = pymongo.MongoClient(settings.MONGODB_HOST)
+        self.collection=client.get_database()[settings.MONGODB_COLLECTION]
+
+
+
     def process_item(self, item, spider):
+        for data in item:
+            if data is None :
+                return
+        self.collection.insert_one(dict(item))
         return item
