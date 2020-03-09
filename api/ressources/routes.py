@@ -1,9 +1,9 @@
-from .api import NewsAPI , ArticleAPI,AuthorAPI,TagAPI
+from .api import NewsPnt , ArticlePnt,AuthorPnt,TagPnt
 from flask_restful import Api
 
 def initialize_routes(app):
     api = Api(app,prefix='/api/v1/news')
-    api.add_resource(NewsAPI,'')
-    api.add_resource(ArticleAPI,'/<id>')
-    api.add_resource(AuthorAPI,'/author')
-    api.add_resource(TagAPI,'/tag')
+    api.add_resource(NewsPnt,'')
+    api.add_resource(ArticlePnt,'/<id>')
+    api.add_resource(AuthorPnt,'/author')
+    api.add_resource(TagPnt,'/tag')

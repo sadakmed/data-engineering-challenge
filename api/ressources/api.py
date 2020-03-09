@@ -7,7 +7,7 @@ import json
 
 
 
-class NewsAPI(Resource):
+class NewsPnt(Resource):
     
     def get(self):
         
@@ -26,20 +26,20 @@ class NewsAPI(Resource):
 
 
 
-class ArticleAPI(Resource):
+class ArticlePnt(Resource):
     def get(self,id):
         news = News.objects.filter(id = ObjectId(id)).to_json()
         return Response(news, mimetype="application/json", status=200)
 
 
-class AuthorAPI(Resource):
+class AuthorPnt(Resource):
     def get(self):
         news = News.objects.only('authors')
         authors=list(map( lambda x:x['authors'],json.loads(news.to_json())))
         y = set(chain(*authors))
         return jsonify({'authors':list(y)})
 
-class TagAPI(Resource):
+class TagPnt(Resource):
     def get(self):
         news = News.objects.only('tag').distinct('tag')
         print(news)
